@@ -3,13 +3,13 @@ import enum
 import json
 import logging
 import os.path
-import random
 import statistics
 import sys
 import time
 import urllib.parse
 from argparse import ArgumentParser
 from typing import NamedTuple, Optional, Sequence
+import secrets
 
 try:
     import aiohttp
@@ -105,7 +105,7 @@ def random_flask_inference_request(base_url: str) -> InferenceRequest:
     """
     Generates a random inference request for a Flask server
     """
-    query = urllib.parse.quote(random.choice(inputs))
+    query = urllib.parse.quote(secrets.choice(inputs))
     return InferenceRequest(
         method="GET",
         url=f"{base_url}/predict/{query}",
@@ -119,7 +119,7 @@ def random_kserve_inference_request(
     """
     Generates a random inference request for a KServe server
     """
-    query = json.dumps({"instances": [random.choice(inputs)]})
+    query = json.dumps({"instances": [secrets.choice(inputs)]})
     return InferenceRequest(
         method="POST",
         url=f"{base_url}/v1/models/{model_name}:predict",
